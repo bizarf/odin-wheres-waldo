@@ -1,0 +1,9 @@
+.headerBar {
+    background-color: skyblue;
+    display: flex;
+    justify-content: space-between;
+}
+
+.charactersToFind {
+    display: flex;
+}
