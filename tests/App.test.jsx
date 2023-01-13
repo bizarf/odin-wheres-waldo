@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 
 describe("Dropdown menu tests", () => {
     it("Dropdown menu opens when the user clicks", async () => {
-        const { app } = render(<App />);
+        render(<App />);
         const dropdownMenu = document.querySelector(".dropdownMenu");
         const game = screen.getByText("Game goes here");
         await userEvent.click(game);

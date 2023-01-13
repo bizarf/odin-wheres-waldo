@@ -7,7 +7,7 @@ const Home = (props) => {
             <div className="game" onClick={props.dropdownMenuOpen}>
                 Game goes here
             </div>
-            <DropdownMenu />
+            <DropdownMenu characterMark={props.characterMark} />
         </div>
     );
 };

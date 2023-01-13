@@ -1,9 +1,17 @@
 .headerBar {
     background-color: skyblue;
+}
+
+.topOfHeaderBar {
     display: flex;
     justify-content: space-between;
 }
 
 .charactersToFind {
     display: flex;
+}
+
+.timer {
+    display: flex;
+    justify-content: center;
 }
