@@ -1,13 +1,17 @@
-import DropdownMenu from "./DropdownMenu";
+import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 
-const Home = (props) => {
+const Home = () => {
+    const navigate = useNavigate();
+
+    const startGame = () => {
+        navigate("/game");
+    };
+
     return (
         <div>
-            <div className="game" onClick={props.dropdownMenuOpen}>
-                Game goes here
-            </div>
-            <DropdownMenu characterMark={props.characterMark} />
+            <div>Home page goes</div>
+            <button onClick={startGame}>Start game</button>
         </div>
     );
 };
