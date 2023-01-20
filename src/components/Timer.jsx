@@ -1,9 +1,9 @@
-const Timer = () => {
-    const [isRunning, setIsRunning] = useState(false);
-
-    const [time, setTime] = useState(0);
-
-    return <div className="timer"></div>;
+const Timer = (props) => {
+    return (
+        <div className="timer">
+            <span>{props.timeConverter}</span>
+        </div>
+    );
 };
 
 export default Timer;

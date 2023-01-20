@@ -5,4 +5,5 @@
     height: 100%;
     z-index: -1;
     -webkit-user-drag: none;
+    user-select: none;
 }

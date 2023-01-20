@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 
-const Home = () => {
+const Home = (props) => {
     const navigate = useNavigate();
 
     const startGame = () => {
         navigate("/game");
+        props.setIsRunning(true);
     };
 
     return (

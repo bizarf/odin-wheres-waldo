@@ -17,6 +17,7 @@
 
 .charactersToFind {
     display: flex;
+    user-select: none;
 }
 
 .found {
@@ -32,4 +33,11 @@
 .character3 {
     height: 70px;
     -webkit-user-drag: none;
+}
+
+.timer {
+    padding-right: 10px;
+}
+
+.leaderboardBtn {
 }

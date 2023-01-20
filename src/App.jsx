@@ -12,73 +12,131 @@ import Game from "./components/Game";
 import Leaderboard from "./components/Leaderboard";
 import HeaderBar from "./components/HeaderBar";
 import { app } from "./components/firebaseConfig";
-
 import "./styles/App.css";
 
 const App = () => {
     // after the app renders, get the character locations from the Firestore database.
     useEffect(() => {
-        const getTargetData = async () => {
+        getTargetData();
+    }, []);
+
+    // gets the target data from firestore
+    const getTargetData = async () => {
+        const db = getFirestore(app);
+        const docRef = doc(db, "Waldo", "targets");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const targetData = docSnap.data().targetCharacters;
+            setTargetCharacters([...targetData]);
+        } else {
+            console.log("No such document");
+        }
+    };
+
+    // array containing the target data
+    const [targetCharacters, setTargetCharacters] = useState([]);
+
+    // timer code
+    const [isRunning, setIsRunning] = useState(false);
+    const [time, setTime] = useState(0);
+
+    useEffect(() => {
+        let interval;
+        if (isRunning) {
+            // use the setInterval function to update the time state by adding 1 second for every 1000 milliseconds.
+            interval = setInterval(() => {
+                setTime((prevTime) => prevTime + 1);
+            }, 1000);
+        } else if (!isRunning) {
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [isRunning]);
+
+    // function that converts the seconds value from time into hour:minute:second format using the date function
+    const timeConverter = (time) => {
+        const date = new Date(null);
+        date.setSeconds(time);
+        return date.toISOString().slice(11, 19);
+    };
+
+    // leaderboard stuff
+    const [leaderboard, setLeaderboard] = useState([]);
+
+    // when the app renders get the leaderboard data from firestore
+    useEffect(() => {
+        const getLeaderboardData = async () => {
             const db = getFirestore(app);
-            const docRef = doc(db, "Waldo", "targets");
+            const docRef = doc(db, "Waldo", "leaderboard");
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-                const targetData = docSnap.data().targetCharacters;
-                setTargetCharacters([...targetData]);
+                const targetData = docSnap.data().leaderboardData;
+                setLeaderboard([...targetData]);
             } else {
                 console.log("No such document");
             }
         };
-        getTargetData();
+        getLeaderboardData();
     }, []);
 
-    const [dropdownMenu, setDropdownMenu] = useState(false);
+    // if the leaderboard state updates, then we'll write the array to firestore
+    useEffect(() => {
+        if (leaderboard.length != 0) {
+            const db = getFirestore(app);
+            const docRef = collection(db, "Waldo");
 
-    const [mousePosition, setMousePosition] = useState({
-        xPercent: 0,
-        yPercent: 0,
-    });
+            setDoc(doc(docRef, "leaderboard"), {
+                leaderboardData: leaderboard,
+            });
+        }
+    }, [leaderboard]);
 
-    const [targetCharacters, setTargetCharacters] = useState([
-        // {
-        //     name: "character1",
-        //     found: false,
-        //     coordinates: [75, 79],
-        // },
-        // {
-        //     name: "character2",
-        //     found: false,
-        //     coordinates: [88, 45],
-        // },
-        // {
-        //     name: "character3",
-        //     found: false,
-        //     coordinates: [30, 63],
-        // },
-    ]);
+    const resetGame = () => {
+        setTargetCharacters([]);
+        getTargetData();
+        setTime(0);
+    };
 
     return (
         <div className="app">
             <BrowserRouter>
-                <HeaderBar />
+                <HeaderBar
+                    timeConverter={timeConverter(time)}
+                    isRunning={isRunning}
+                />
                 <div className="content">
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route
+                            path="/"
+                            element={<Home setIsRunning={setIsRunning} />}
+                        />
                         <Route
                             path="/game"
                             element={
                                 <Game
-                                    dropdownMenu={dropdownMenu}
-                                    setDropdownMenu={setDropdownMenu}
-                                    mousePosition={mousePosition}
-                                    setMousePosition={setMousePosition}
                                     targetCharacters={targetCharacters}
                                     setTargetCharacters={setTargetCharacters}
+                                    timeConverter={timeConverter(time)}
+                                    time={time}
+                                    leaderboard={leaderboard}
+                                    setLeaderboard={setLeaderboard}
+                                    resetGame={resetGame}
+                                    isRunning={isRunning}
+                                    setIsRunning={setIsRunning}
                                 />
                             }
                         />
-                        <Route path="/leaderboard" element={<Leaderboard />} />
+                        <Route
+                            path="/leaderboard"
+                            element={
+                                <Leaderboard
+                                    timeConverter={timeConverter}
+                                    leaderboard={leaderboard}
+                                />
+                            }
+                        />
                     </Routes>
                 </div>
             </BrowserRouter>

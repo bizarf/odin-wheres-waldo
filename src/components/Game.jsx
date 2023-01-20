@@ -1,12 +1,21 @@
+import { useEffect, useState } from "react";
 import DropdownMenu from "./DropdownMenu";
 import "../styles/Game.css";
 import waldoPuzzle from "../assets/whereswaldopuzzle.jpeg";
+import NameEntry from "./NameEntry";
 
 const Game = (props) => {
+    const [dropdownMenu, setDropdownMenu] = useState(false);
+
+    const [mousePosition, setMousePosition] = useState({
+        xPercent: 0,
+        yPercent: 0,
+    });
+
     const dropdownMenuOpen = (e) => {
         const dropdownMenuDiv = document.querySelector(".dropdownMenu");
 
-        if (props.dropdownMenu === false) {
+        if (dropdownMenu) {
             // gets mouse position based on user's window resolution
             const rect = e.target.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -20,15 +29,28 @@ const Game = (props) => {
             dropdownMenuDiv.style.top = `${y}px`;
             dropdownMenuDiv.style.display = "block";
             // send the mouse position in percent to the mouse position state. This will be used for when the user wants to tag the photo
-            props.setMousePosition({ xPercent: xPercent, yPercent: yPercent });
-            console.log(props.mousePosition);
+            setMousePosition({ xPercent: xPercent, yPercent: yPercent });
             // set the dropdownMenu to true
-            props.setDropdownMenu((prevDropdownMenu) => !prevDropdownMenu);
+            // setDropdownMenu((prevDropdownMenu) => !prevDropdownMenu);
         } else {
             // if dropdownMenu is true, then the next time the user clicks the dropdown menu will disappear. the dropdownMenu state is then set to false to allow the next click to bring up the menu
-            dropdownMenuDiv.style.display = "none";
-            props.setDropdownMenu((prevDropdownMenu) => !prevDropdownMenu);
+            setDropdownMenu((prevDropdownMenu) => !prevDropdownMenu);
         }
+    };
+
+    const [victory, setVictory] = useState(false);
+
+    // use the every function to check if the found property across all three characters is the same
+    const victoryCheck = () => {
+        const check = props.targetCharacters
+            .map((character) => character.found)
+            .every((status) => {
+                if (status === true) {
+                    props.setIsRunning(false);
+                    setDropdownMenu(false);
+                    setVictory((state) => !state);
+                }
+            });
     };
 
     return (
@@ -38,12 +60,42 @@ const Game = (props) => {
                 className="game"
                 onClick={dropdownMenuOpen}
             />
-            <DropdownMenu
-                characterMark={props.characterMark}
-                targetCharacters={props.targetCharacters}
-                setTargetCharacters={props.setTargetCharacters}
-                mousePosition={props.mousePosition}
-            />
+            {/* {dropdownMenu && (
+                <DropdownMenu
+                    characterMark={props.characterMark}
+                    targetCharacters={props.targetCharacters}
+                    setTargetCharacters={props.setTargetCharacters}
+                    mousePosition={mousePosition}
+                    victoryCheck={victoryCheck}
+                />
+            )} */}
+            {!victory ? (
+                <DropdownMenu
+                    characterMark={props.characterMark}
+                    targetCharacters={props.targetCharacters}
+                    setTargetCharacters={props.setTargetCharacters}
+                    mousePosition={mousePosition}
+                    victoryCheck={victoryCheck}
+                />
+            ) : (
+                <NameEntry
+                    timeConverter={props.timeConverter}
+                    leaderboard={props.leaderboard}
+                    setLeaderboard={props.setLeaderboard}
+                    time={props.time}
+                    resetGame={props.resetGame}
+                />
+            )}
+
+            {/* {victory && (
+                <NameEntry
+                    timeConverter={props.timeConverter}
+                    leaderboard={props.leaderboard}
+                    setLeaderboard={props.setLeaderboard}
+                    time={props.time}
+                    resetGame={props.resetGame}
+                />
+            )} */}
         </div>
     );
 };

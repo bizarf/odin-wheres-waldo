@@ -37,6 +37,7 @@ const DropdownMenu = (props) => {
         });
         // update the targetCharacters in the state with the spread operator
         props.setTargetCharacters([...arrayCopy]);
+        props.victoryCheck();
     };
 
     // check if value is within range
