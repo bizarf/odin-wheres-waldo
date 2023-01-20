@@ -12,10 +12,45 @@
     flex-direction: column;
     align-items: center;
     position: fixed;
-    background: white;
-    width: 80%;
-    height: auto;
+    width: 40%;
+    padding: 20px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background-color: #3b82f6;
+    border: 3px solid;
+    border-radius: 20px;
+}
+
+.nameEntry-form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.nameEntry-buttons {
+    margin-top: 20px;
+}
+
+.nameEntry-cancel,
+.nameEntry-submit {
+    padding: 5px 20px;
+    border-radius: 10px;
+    border: 2px solid;
+    background-color: #b91c1c;
+    font-weight: bold;
+}
+
+.nameEntry-cancel {
+    margin-right: 20px;
+}
+
+#playerName {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.nameEntry-nameLabel {
+    font-weight: bold;
+    padding: 10px 0;
 }

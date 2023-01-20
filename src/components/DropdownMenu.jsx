@@ -16,13 +16,13 @@ const DropdownMenu = (props) => {
                     if (
                         inRange(
                             targetX,
-                            props.mousePosition.xPercent - 5,
-                            props.mousePosition.xPercent + 5
+                            props.mousePosition.xPercent - 1,
+                            props.mousePosition.xPercent + 1
                         ) === true &&
                         inRange(
                             targetY,
-                            props.mousePosition.yPercent - 5,
-                            props.mousePosition.yPercent + 5
+                            props.mousePosition.yPercent - 1,
+                            props.mousePosition.yPercent + 1
                         ) === true
                     ) {
                         console.log(`you found ${character.name}`);

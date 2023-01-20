@@ -97,14 +97,18 @@ const App = () => {
         setTargetCharacters([]);
         getTargetData();
         setTime(0);
+        if (isRunning) {
+            setIsRunning((state) => !state);
+        }
     };
 
     return (
         <div className="app">
-            <BrowserRouter>
+            <BrowserRouter basename="/odin-wheres-waldo">
                 <HeaderBar
                     timeConverter={timeConverter(time)}
                     isRunning={isRunning}
+                    resetGame={resetGame}
                 />
                 <div className="content">
                     <Routes>

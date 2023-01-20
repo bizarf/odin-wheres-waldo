@@ -5,18 +5,18 @@ const NameEntry = (props) => {
     const navigate = useNavigate();
 
     const submitEntry = () => {
-        const nameEntryDiv = document.querySelector(".nameEntry");
-
-        const newEntry = { name: playerName.value, time: props.time };
-        props.setLeaderboard([...props.leaderboard, newEntry]);
-        nameEntryDiv.style.display = "none";
-        navigate("/leaderboard");
-        props.resetGame();
+        const playerName = document.querySelector("#playerName");
+        if (!playerName.checkValidity()) {
+            playerName.reportValidity();
+        } else {
+            const newEntry = { name: playerName.value, time: props.time };
+            props.setLeaderboard([...props.leaderboard, newEntry]);
+            navigate("/leaderboard");
+            props.resetGame();
+        }
     };
 
     const cancelReset = () => {
-        const nameEntryDiv = document.querySelector(".nameEntry");
-        nameEntryDiv.style.display = "none";
         props.resetGame();
         navigate("/");
     };
@@ -26,12 +26,25 @@ const NameEntry = (props) => {
             <div className="nameEntry-modal"></div>
             <div className="nameEntry-main">
                 <h1>You finished in {props.timeConverter}!</h1>
-                <p>Submit your score to the leaderboard!</p>
-                <label htmlFor="playerName">Name:</label>
-                <input type="text" name="playerName" id="playerName" />
-                <div>
-                    <button onClick={cancelReset}>Cancel</button>
-                    <button onClick={submitEntry}>Submit</button>
+                <h3>Submit your score to the leaderboard!</h3>
+                <div className="nameEntry-form">
+                    <label htmlFor="playerName" className="nameEntry-nameLabel">
+                        Name:
+                    </label>
+                    <input
+                        type="text"
+                        name="playerName"
+                        id="playerName"
+                        required
+                    />
+                </div>
+                <div className="nameEntry-buttons">
+                    <button onClick={cancelReset} className="nameEntry-cancel">
+                        Cancel
+                    </button>
+                    <button onClick={submitEntry} className="nameEntry-submit">
+                        Submit
+                    </button>
                 </div>
             </div>
         </div>

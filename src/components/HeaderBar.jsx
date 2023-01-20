@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/HeaderBar.css";
 import waldo from "../assets/waldo.png";
 import wenda from "../assets/wenda.png";
@@ -6,10 +6,19 @@ import whitebeard from "../assets/whitebeard.png";
 import Timer from "./Timer";
 
 const HeaderBar = (props) => {
+    const navigate = useNavigate();
+
+    const goToHomepage = () => {
+        props.resetGame();
+        navigate("/");
+    };
+
     return (
         <div className="headerBar">
-            <div>
-                <Link to="/">Where's Waldo?</Link>
+            <div className="logo">
+                <button className="homeLink" onClick={goToHomepage}>
+                    Where's Waldo?
+                </button>
             </div>
             {props.isRunning && (
                 <div className="charactersToFind">

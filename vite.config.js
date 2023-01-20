@@ -9,4 +9,5 @@ export default defineConfig({
         globals: true,
         setupFiles: "./tests/setup.js",
     },
+    base: "/odin-wheres-waldo/",
 });

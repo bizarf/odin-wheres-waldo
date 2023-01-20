@@ -1,0 +1,49 @@
+table,
+th,
+td {
+    border: 1px solid #64748b;
+}
+
+table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.leaderboard {
+    display: flex;
+    justify-content: center;
+}
+
+td,
+th {
+    color: white;
+    font-size: 18px;
+    padding: 8px;
+}
+
+thead {
+    background-color: #6b7280;
+}
+
+.thPlace {
+    width: 10%;
+}
+
+.tdPlace,
+.thTime,
+.tdTime {
+    text-align: center;
+}
+
+.thName {
+    text-align: left;
+}
+
+.thTime {
+    width: 15%;
+}
+
+tbody tr:hover {
+    background-color: #64748b;
+}
