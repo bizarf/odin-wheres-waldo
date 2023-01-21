@@ -25,7 +25,6 @@ const DropdownMenu = (props) => {
                             props.mousePosition.yPercent + 1
                         ) === true
                     ) {
-                        console.log(`you found ${character.name}`);
                         characterMarkHeader(character.name);
                         // update the array to switch found property to true
                         return { ...character, found: !character.found };
