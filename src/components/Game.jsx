@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DropdownMenu from "./DropdownMenu";
 import "../styles/Game.css";
 import waldoPuzzle from "../assets/whereswaldopuzzle.jpeg";
@@ -34,16 +34,15 @@ const Game = (props) => {
     const [victory, setVictory] = useState(false);
 
     // use the every function to check if the found property across all three characters is the same
-    const victoryCheck = () => {
-        props.targetCharacters
-            .map((character) => character)
-            .every((character) => {
-                if (character.found === true) {
-                    props.setIsRunning(false);
-                    setVictory((state) => !state);
-                }
-            });
-    };
+    useEffect(() => {
+        const result = props.targetCharacters
+            .map((character) => character.found)
+            .every((status) => status === true);
+        if (result === true) {
+            props.setIsRunning(false);
+            setVictory((state) => !state);
+        }
+    }, [props.targetCharacters]);
 
     return (
         <div>
@@ -59,7 +58,6 @@ const Game = (props) => {
                     targetCharacters={props.targetCharacters}
                     setTargetCharacters={props.setTargetCharacters}
                     mousePosition={mousePosition}
-                    victoryCheck={victoryCheck}
                 />
             ) : (
                 <NameEntry

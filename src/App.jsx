@@ -104,7 +104,7 @@ const App = () => {
 
     return (
         <div className="app">
-            <BrowserRouter basename="/odin-wheres-waldo">
+            <BrowserRouter basename="/odin-wheres-waldo/">
                 <HeaderBar
                     timeConverter={timeConverter(time)}
                     isRunning={isRunning}
