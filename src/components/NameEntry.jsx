@@ -76,6 +76,7 @@ const NameEntry = (props) => {
                         type="text"
                         name="playerName"
                         id="playerName"
+                        maxLength="20"
                         required
                     />
                 </div>
