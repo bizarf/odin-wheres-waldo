@@ -21,6 +21,7 @@ npm run dev
 -   Prettier
 -   ESlint
 -   Vitest
+-   Firebase - Cloud Firestore
 
 <hr>
 
