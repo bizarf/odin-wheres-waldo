@@ -1,6 +1,27 @@
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { app } from "./firebaseConfig";
 import "../styles/DropdownMenu.css";
 
 const DropdownMenu = (props) => {
+    const getLocationData = async () => {
+        const db = getFirestore(app);
+        const docRef = doc(db, "Waldo", "targetsLocation");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const location = docSnap.data().location;
+            locationData = location;
+        } else {
+            console.log("No such document");
+        }
+    };
+
+    let locationData = getLocationData();
+
+    const findIndex = (character) => {
+        return locationData.map((data) => data.name).indexOf(character);
+    };
+
     const characterMark = (target) => {
         const characterMarkHeader = (character) => {
             const foundCharacter = document.querySelector(`.${character}`);
@@ -11,8 +32,9 @@ const DropdownMenu = (props) => {
         const arrayCopy = props.targetCharacters.map((character) => {
             if (character.name === target) {
                 if (character.found === false) {
-                    const targetX = character.coordinates[0];
-                    const targetY = character.coordinates[1];
+                    const index = findIndex(character.name);
+                    const targetX = locationData[index].coordinates[0];
+                    const targetY = locationData[index].coordinates[1];
                     if (
                         inRange(
                             targetX,
