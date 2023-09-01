@@ -1,10 +1,25 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import DropdownMenu from "./DropdownMenu";
 import "../styles/Game.css";
 import waldoPuzzle from "../assets/whereswaldopuzzle.jpeg";
 import NameEntry from "./NameEntry";
+import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-const Game = (props) => {
+const Game = ({
+    targetCharacters,
+    setTargetCharacters,
+    timeConverter,
+    time,
+    leaderboard,
+    setLeaderboard,
+    resetGame,
+    isRunning,
+    setIsRunning,
+}) => {
+    const navigate = useNavigate();
+
     const [mousePosition, setMousePosition] = useState({
         xPercent: 0,
         yPercent: 0,
@@ -13,7 +28,7 @@ const Game = (props) => {
     const dropdownMenuOpen = (e) => {
         const dropdownMenuDiv = document.querySelector(".dropdownMenu");
 
-        if (props.isRunning) {
+        if (isRunning) {
             // gets mouse position based on user's window resolution
             const rect = e.target.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -35,14 +50,23 @@ const Game = (props) => {
 
     // use the every function to check if the found property across all three characters is the same
     useEffect(() => {
-        const result = props.targetCharacters
+        const result = targetCharacters
             .map((character) => character.found)
             .every((status) => status === true);
         if (result === true) {
-            props.setIsRunning(false);
-            setVictory((state) => !state);
+            setIsRunning(false);
+            if (victory === false) {
+                setVictory((state) => !state);
+            }
         }
-    }, [props.targetCharacters]);
+    }, [targetCharacters]);
+
+    useEffect(() => {
+        if (victory === false && isRunning === false) {
+            navigate("/");
+        }
+    }),
+        [];
 
     return (
         <div>
@@ -54,22 +78,33 @@ const Game = (props) => {
             {/* if the user hasn't won, then render the dropdown menu. if the user has won then render the name entry div instead */}
             {!victory ? (
                 <DropdownMenu
-                    characterMark={props.characterMark}
-                    targetCharacters={props.targetCharacters}
-                    setTargetCharacters={props.setTargetCharacters}
+                    targetCharacters={targetCharacters}
+                    setTargetCharacters={setTargetCharacters}
                     mousePosition={mousePosition}
                 />
             ) : (
                 <NameEntry
-                    timeConverter={props.timeConverter}
-                    leaderboard={props.leaderboard}
-                    setLeaderboard={props.setLeaderboard}
-                    time={props.time}
-                    resetGame={props.resetGame}
+                    timeConverter={timeConverter}
+                    leaderboard={leaderboard}
+                    setLeaderboard={setLeaderboard}
+                    time={time}
+                    resetGame={resetGame}
                 />
             )}
         </div>
     );
+};
+
+Game.propTypes = {
+    resetGame: PropTypes.func,
+    isRunning: PropTypes.bool,
+    timeConverter: PropTypes.string,
+    targetCharacters: PropTypes.array,
+    setTargetCharacters: PropTypes.func,
+    time: PropTypes.number,
+    leaderboard: PropTypes.array,
+    setLeaderboard: PropTypes.func,
+    setIsRunning: PropTypes.func,
 };
 
 export default Game;

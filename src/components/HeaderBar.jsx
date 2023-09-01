@@ -1,15 +1,17 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/HeaderBar.css";
 import waldo from "../assets/waldo.png";
 import wenda from "../assets/wenda.png";
 import whitebeard from "../assets/whitebeard.png";
 import Timer from "./Timer";
+import PropTypes from "prop-types";
 
-const HeaderBar = (props) => {
+const HeaderBar = ({ resetGame, isRunning, timeConverter }) => {
     const navigate = useNavigate();
 
     const goToHomepage = () => {
-        props.resetGame();
+        resetGame();
         navigate("/");
     };
 
@@ -17,10 +19,10 @@ const HeaderBar = (props) => {
         <div className="headerBar">
             <div className="logo">
                 <button className="homeLink" onClick={goToHomepage}>
-                    Where's Waldo?
+                    Where&#39;s Waldo?
                 </button>
             </div>
-            {props.isRunning && (
+            {isRunning && (
                 <div className="charactersToFind">
                     <img
                         src={waldo}
@@ -40,8 +42,8 @@ const HeaderBar = (props) => {
                 </div>
             )}
             <div className="headerRight">
-                {props.isRunning ? (
-                    <Timer timeConverter={props.timeConverter} />
+                {isRunning ? (
+                    <Timer timeConverter={timeConverter} />
                 ) : (
                     <Link to="/Leaderboard">
                         <button className="leaderboardBtn">Leaderboard</button>
@@ -50,6 +52,12 @@ const HeaderBar = (props) => {
             </div>
         </div>
     );
+};
+
+HeaderBar.propTypes = {
+    resetGame: PropTypes.func,
+    isRunning: PropTypes.bool,
+    timeConverter: PropTypes.string,
 };
 
 export default HeaderBar;

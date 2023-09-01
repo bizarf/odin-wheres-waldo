@@ -1,50 +1,59 @@
+import React, { useEffect } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { app } from "./firebaseConfig";
 import "../styles/DropdownMenu.css";
+import PropTypes from "prop-types";
 
-const DropdownMenu = (props) => {
+const DropdownMenu = ({
+    targetCharacters,
+    setTargetCharacters,
+    mousePosition,
+}) => {
     const getLocationData = async () => {
         const db = getFirestore(app);
         const docRef = doc(db, "Waldo", "targetsLocation");
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            const location = docSnap.data().location;
-            locationData = location;
+            return docSnap.data().location;
         } else {
             console.log("No such document");
+            return [];
         }
     };
 
-    let locationData = getLocationData();
+    useEffect(() => {
+        getLocationData();
+    }, []);
 
-    const findIndex = (character) => {
+    const findIndex = (locationData, character) => {
         return locationData.map((data) => data.name).indexOf(character);
     };
 
-    const characterMark = (target) => {
+    const characterMark = async (target) => {
+        const locationData = await getLocationData();
         const characterMarkHeader = (character) => {
             const foundCharacter = document.querySelector(`.${character}`);
             foundCharacter.classList.add("found");
         };
 
         // copy the array and then map it out
-        const arrayCopy = props.targetCharacters.map((character) => {
+        const arrayCopy = targetCharacters.map((character) => {
             if (character.name === target) {
                 if (character.found === false) {
-                    const index = findIndex(character.name);
+                    const index = findIndex(locationData, target);
                     const targetX = locationData[index].coordinates[0];
                     const targetY = locationData[index].coordinates[1];
                     if (
                         inRange(
                             targetX,
-                            props.mousePosition.xPercent - 1,
-                            props.mousePosition.xPercent + 1
+                            mousePosition.xPercent - 1,
+                            mousePosition.xPercent + 1
                         ) === true &&
                         inRange(
                             targetY,
-                            props.mousePosition.yPercent - 1,
-                            props.mousePosition.yPercent + 1
+                            mousePosition.yPercent - 1,
+                            mousePosition.yPercent + 1
                         ) === true
                     ) {
                         characterMarkHeader(character.name);
@@ -57,7 +66,7 @@ const DropdownMenu = (props) => {
             return character;
         });
         // update the targetCharacters in the state with the spread operator
-        props.setTargetCharacters([...arrayCopy]);
+        setTargetCharacters([...arrayCopy]);
     };
 
     // check if value is within range
@@ -89,6 +98,12 @@ const DropdownMenu = (props) => {
             </ul>
         </div>
     );
+};
+
+DropdownMenu.propTypes = {
+    targetCharacters: PropTypes.array,
+    setTargetCharacters: PropTypes.func,
+    mousePosition: PropTypes.object,
 };
 
 export default DropdownMenu;

@@ -5,8 +5,8 @@ import {
     collection,
     setDoc,
 } from "firebase/firestore";
-import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import Home from "./components/Home";
 import Game from "./components/Game";
 import Leaderboard from "./components/Leaderboard";
@@ -103,48 +103,48 @@ const App = () => {
     };
 
     return (
-        <div className="app">
-            <BrowserRouter basename="/odin-wheres-waldo/">
+        <HashRouter>
+            <div className="app">
                 <HeaderBar
                     timeConverter={timeConverter(time)}
                     isRunning={isRunning}
                     resetGame={resetGame}
                 />
-                <div className="content">
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={<Home setIsRunning={setIsRunning} />}
-                        />
-                        <Route
-                            path="/game"
-                            element={
-                                <Game
-                                    targetCharacters={targetCharacters}
-                                    setTargetCharacters={setTargetCharacters}
-                                    timeConverter={timeConverter(time)}
-                                    time={time}
-                                    leaderboard={leaderboard}
-                                    setLeaderboard={setLeaderboard}
-                                    resetGame={resetGame}
-                                    isRunning={isRunning}
-                                    setIsRunning={setIsRunning}
-                                />
-                            }
-                        />
-                        <Route
-                            path="/leaderboard"
-                            element={
-                                <Leaderboard
-                                    timeConverter={timeConverter}
-                                    leaderboard={leaderboard}
-                                />
-                            }
-                        />
-                    </Routes>
-                </div>
-            </BrowserRouter>
-        </div>
+                {/* <div className="content"> */}
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Home setIsRunning={setIsRunning} />}
+                    />
+                    <Route
+                        path="/game"
+                        element={
+                            <Game
+                                targetCharacters={targetCharacters}
+                                setTargetCharacters={setTargetCharacters}
+                                timeConverter={timeConverter(time)}
+                                time={time}
+                                leaderboard={leaderboard}
+                                setLeaderboard={setLeaderboard}
+                                resetGame={resetGame}
+                                isRunning={isRunning}
+                                setIsRunning={setIsRunning}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/leaderboard"
+                        element={
+                            <Leaderboard
+                                timeConverter={timeConverter}
+                                leaderboard={leaderboard}
+                            />
+                        }
+                    />
+                </Routes>
+                {/* </div> */}
+            </div>
+        </HashRouter>
     );
 };
 

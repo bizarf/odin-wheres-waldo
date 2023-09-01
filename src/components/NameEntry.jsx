@@ -1,10 +1,18 @@
+import React from "react";
 import "../styles/NameEntry.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { app } from "../components/firebaseConfig";
+import PropTypes from "prop-types";
 
-const NameEntry = (props) => {
+const NameEntry = ({
+    timeConverter,
+    leaderboard,
+    setLeaderboard,
+    time,
+    resetGame,
+}) => {
     // bad word filter stuff
     const [naughtywords, setNaughtywords] = useState([]);
 
@@ -45,20 +53,20 @@ const NameEntry = (props) => {
 
         // if the word filter returns false, then add the player's name and their time to the leaderboard. if true, then replace their name with a generic censored name
         if (!wordFilter(playerName.value)) {
-            const newEntry = { name: playerName.value, time: props.time };
-            props.setLeaderboard([...props.leaderboard, newEntry]);
+            const newEntry = { name: playerName.value, time: time };
+            setLeaderboard([...leaderboard, newEntry]);
             navigate("/leaderboard");
-            props.resetGame();
+            resetGame();
         } else {
-            const newEntry = { name: "*****", time: props.time };
-            props.setLeaderboard([...props.leaderboard, newEntry]);
+            const newEntry = { name: "*****", time: time };
+            setLeaderboard([...leaderboard, newEntry]);
             navigate("/leaderboard");
-            props.resetGame();
+            resetGame();
         }
     };
 
     const cancelReset = () => {
-        props.resetGame();
+        resetGame();
         navigate("/");
     };
 
@@ -66,7 +74,7 @@ const NameEntry = (props) => {
         <div className="nameEntry">
             <div className="nameEntry-modal"></div>
             <div className="nameEntry-main">
-                <h1>You finished in {props.timeConverter}!</h1>
+                <h1>You finished in {timeConverter}!</h1>
                 <h3>Submit your score to the leaderboard!</h3>
                 <div className="nameEntry-form">
                     <label htmlFor="playerName" className="nameEntry-nameLabel">
@@ -91,6 +99,14 @@ const NameEntry = (props) => {
             </div>
         </div>
     );
+};
+
+NameEntry.propTypes = {
+    timeConverter: PropTypes.string,
+    leaderboard: PropTypes.array,
+    setLeaderboard: PropTypes.func,
+    time: PropTypes.number,
+    resetGame: PropTypes.func,
 };
 
 export default NameEntry;

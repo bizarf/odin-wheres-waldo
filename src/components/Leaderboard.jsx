@@ -1,8 +1,10 @@
+import React from "react";
 import "../styles/Leaderboard.css";
+import PropTypes from "prop-types";
 
-const Leaderboard = (props) => {
+const Leaderboard = ({ timeConverter, leaderboard }) => {
     // sort the array in ascending order by time
-    const sortedLeaderboard = props.leaderboard.sort((a, b) => a.time - b.time);
+    const sortedLeaderboard = leaderboard.sort((a, b) => a.time - b.time);
 
     return (
         <div className="leaderboard">
@@ -21,7 +23,7 @@ const Leaderboard = (props) => {
                                 <td className="tdPlace">{index + 1}</td>
                                 <td>{data.name}</td>
                                 <td className="tdTime">
-                                    {props.timeConverter(data.time)}
+                                    {timeConverter(data.time)}
                                 </td>
                             </tr>
                         );
@@ -30,6 +32,11 @@ const Leaderboard = (props) => {
             </table>
         </div>
     );
+};
+
+Leaderboard.propTypes = {
+    leaderboard: PropTypes.array,
+    timeConverter: PropTypes.func,
 };
 
 export default Leaderboard;

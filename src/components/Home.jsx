@@ -1,15 +1,17 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 import waldo from "../assets/waldo.png";
 import wenda from "../assets/wenda.png";
 import whitebeard from "../assets/whitebeard.png";
+import PropTypes from "prop-types";
 
-const Home = (props) => {
+const Home = ({ setIsRunning }) => {
     const navigate = useNavigate();
 
     const startGame = () => {
         navigate("/game");
-        props.setIsRunning(true);
+        setIsRunning(true);
     };
 
     return (
@@ -40,6 +42,10 @@ const Home = (props) => {
             </div>
         </div>
     );
+};
+
+Home.propTypes = {
+    setIsRunning: PropTypes.func,
 };
 
 export default Home;
