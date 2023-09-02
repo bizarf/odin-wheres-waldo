@@ -15,24 +15,32 @@ import { app } from "./components/firebaseConfig";
 import "./styles/App.css";
 
 const App = () => {
+    const [error, setError] = useState(false);
+
     // after the app renders, get the character locations from the Firestore database.
-    useEffect(() => {
-        getTargetData();
-    }, []);
 
     // gets the target data from firestore
     const getTargetData = async () => {
-        const db = getFirestore(app);
-        const docRef = doc(db, "Waldo", "targets");
-        const docSnap = await getDoc(docRef);
+        try {
+            const db = getFirestore(app);
+            const docRef = doc(db, "Waldo", "targets");
+            const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            const targetData = docSnap.data().targetCharacters;
-            setTargetCharacters([...targetData]);
-        } else {
-            console.log("No such document");
+            if (docSnap.exists()) {
+                const targetData = docSnap.data().targetCharacters;
+                setTargetCharacters([...targetData]);
+            } else {
+                console.log("No such document");
+            }
+        } catch (er) {
+            setError(true);
+            document.querySelector(".startBtn").disabled = true;
         }
     };
+
+    useEffect(() => {
+        getTargetData();
+    }, []);
 
     // array containing the target data
     const [targetCharacters, setTargetCharacters] = useState([]);
@@ -144,6 +152,13 @@ const App = () => {
                 </Routes>
                 {/* </div> */}
             </div>
+            {error && (
+                <div className="errorDiv">
+                    <h1 className="errorMsg">
+                        Error. Could not communicate with Firebase.
+                    </h1>
+                </div>
+            )}
         </HashRouter>
     );
 };

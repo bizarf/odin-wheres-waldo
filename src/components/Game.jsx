@@ -50,19 +50,23 @@ const Game = ({
 
     // use the every function to check if the found property across all three characters is the same
     useEffect(() => {
-        const result = targetCharacters
-            .map((character) => character.found)
-            .every((status) => status === true);
-        if (result === true) {
+        const result =
+            targetCharacters.length > 0
+                ? targetCharacters.every(
+                      (character) => character.found === true
+                  )
+                : false;
+
+        if (result) {
             setIsRunning((state) => !state);
-            if (victory === false) {
-                setVictory((state) => !state);
+            if (!victory) {
+                return setVictory((state) => !state);
             }
         }
     }, [targetCharacters]);
 
     useEffect(() => {
-        if (victory === false && isRunning === false) {
+        if (!victory && !isRunning) {
             navigate("/");
         }
     }),

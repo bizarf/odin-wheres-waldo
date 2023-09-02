@@ -15,6 +15,10 @@ const HeaderBar = ({ resetGame, isRunning, timeConverter }) => {
         navigate("/");
     };
 
+    const goToLeaderboard = () => {
+        navigate("/leaderboard");
+    };
+
     return (
         <div className="headerBar">
             <div className="logo">
@@ -45,9 +49,12 @@ const HeaderBar = ({ resetGame, isRunning, timeConverter }) => {
                 {isRunning ? (
                     <Timer timeConverter={timeConverter} />
                 ) : (
-                    <Link to="/Leaderboard">
-                        <button className="leaderboardBtn">Leaderboard</button>
-                    </Link>
+                    <button
+                        className="leaderboardBtn"
+                        onClick={goToLeaderboard}
+                    >
+                        Leaderboard
+                    </button>
                 )}
             </div>
         </div>

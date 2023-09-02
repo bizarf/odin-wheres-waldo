@@ -7,3 +7,23 @@
     -webkit-user-drag: none;
     user-select: none;
 }
+
+.errorDiv {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.errorMsg {
+    background-color: white;
+    padding: 2rem;
+    font-size: 1.5rem;
+    border-radius: 1rem;
+}

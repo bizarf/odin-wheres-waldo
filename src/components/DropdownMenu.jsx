@@ -18,7 +18,7 @@ const DropdownMenu = ({
             return docSnap.data().location;
         } else {
             console.log("No such document");
-            return [];
+            // return [];
         }
     };
 
@@ -104,6 +104,8 @@ DropdownMenu.propTypes = {
     targetCharacters: PropTypes.array,
     setTargetCharacters: PropTypes.func,
     mousePosition: PropTypes.object,
+    victoryCheck: PropTypes.func,
+    setError: PropTypes.func,
 };
 
 export default DropdownMenu;
