@@ -54,7 +54,7 @@ const Game = ({
             .map((character) => character.found)
             .every((status) => status === true);
         if (result === true) {
-            setIsRunning(false);
+            setIsRunning((state) => !state);
             if (victory === false) {
                 setVictory((state) => !state);
             }
